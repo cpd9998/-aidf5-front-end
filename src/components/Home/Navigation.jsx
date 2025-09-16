@@ -2,6 +2,8 @@ import { IoMdMenu } from "react-icons/io";
 import { AiOutlineGlobal } from "react-icons/ai";
 import { Link } from "react-router";
 import  {increment} from "@/lib/features/counterSlice.js";
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
+
 
 import {
   Popover,
@@ -14,7 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const count = useSelector(state => state.counter.value);
+  const count = useSelector(state  => state.counter.value);
   const dispatch = useDispatch();
 
 
@@ -28,8 +30,7 @@ const Navigation = () => {
         >
           Home
         </Link>
-        <p>{count}</p>
-        <button onClick={()=> dispatch(increment())}>add</button>
+
       </div>
       <div className=" cursor-pointer flex  font-bold text-white absolute top-2 right-6 gap-3">
         <Menu>
@@ -42,20 +43,27 @@ const Navigation = () => {
           <AiOutlineGlobal />
           <span>En</span>
         </button>
+        <SignedOut>
 
-        <Link
-          className=" text-sm h-10 w-14 font-extralight rounded-md hover:bg-slate-200 hover:text-black   justify-center items-center text-white  hidden md:flex transition-all duration-300 ease-in-out"
-          to="/sign-in"
-        >
-          Sign In
-        </Link>
+            <Link
+                className=" text-sm h-10 w-14 font-extralight rounded-md hover:bg-slate-200 hover:text-black   justify-center items-center text-white  hidden md:flex transition-all duration-300 ease-in-out"
+                to="/sign-in"
+            >
+                Sign In
+            </Link>
 
-        <Link
-          className=" text-xs font-light h-10 w-16  rounded-md bg-slate-200 text-black   justify-center items-center   hidden md:flex transition-all duration-300 ease-in-out"
-          to="/sign-up"
-        >
-          Sign Up
-        </Link>
+            <Link
+                className=" text-xs font-light h-10 w-16  rounded-md bg-slate-200 text-black   justify-center items-center   hidden md:flex transition-all duration-300 ease-in-out"
+                to="/sign-up"
+            >
+                Sign Up
+            </Link>
+        </SignedOut>
+
+          <SignedIn>
+              <UserButton/>
+          </SignedIn>
+
       </div>
       {isMenuOpen && <Menu />}
     </nav>

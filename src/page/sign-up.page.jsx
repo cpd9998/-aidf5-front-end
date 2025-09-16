@@ -1,10 +1,11 @@
 import React from "react";
+import { SignUp, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 
 const SignUpPage = () => {
   return (
-    <div>
-      <h1 className="text-5xl">sign up page</h1>;
-    </div>
+    <>
+        <SignUp/>
+    </>
   );
 };
 
