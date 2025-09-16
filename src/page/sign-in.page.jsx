@@ -1,10 +1,10 @@
 import React from "react";
-import { SignIn } from '@clerk/clerk-react';
+import { SignIn } from "@clerk/clerk-react";
 const SignInPage = () => {
   return (
-      <>
-    <SignIn/>
-      </>
+    <div className="w-full h-screen flex items-center justify-center ">
+      <SignIn />
+    </div>
   );
 };
 
