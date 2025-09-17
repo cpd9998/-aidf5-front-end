@@ -5,13 +5,21 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/",
     prepareHeaders: async (headers) => {
-      const clerk = window.Clerk;
-      if (clerk) {
-        const token = await clerk.session.getToken();
-        if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
+      return new Promise(async (resolve) => {
+        async function checkToken() {
+          const clerk = window.Clerk;
+          if (clerk) {
+            const token = await clerk.session.getToken();
+            if (token) {
+              headers.set("Authorization", `Bearer ${token}`);
+              resolve(headers);
+            }
+          } else {
+            setTimeout(checkToken, 500);
+          }
         }
-      }
+        checkToken();
+      });
     },
   }),
   tagTypes: ["Hotel", "Location"],
