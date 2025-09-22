@@ -53,6 +53,15 @@ export const api = createApi({
           : [{ type: "Location", id: "LIST" }],
     }),
 
+    addHotel: build.mutation({
+      query: (hotel) => ({
+        url: "hotels",
+        method: "POST",
+        body: hotel,
+      }),
+      invalidatesTags: [{ type: "Hotel", id: "LIST" }],
+    }),
+
     addLocation: build.mutation({
       query: (location) => ({
         url: "location",
@@ -87,4 +96,5 @@ export const {
   useGetHotelByIdQuery,
   useAddLocationMutation,
   useAddReviewMutation,
+  useAddHotelMutation,
 } = api;
