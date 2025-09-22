@@ -5,21 +5,28 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/",
     prepareHeaders: async (headers) => {
-      return new Promise(async (resolve) => {
-        async function checkToken() {
-          const clerk = window.Clerk;
-          if (clerk) {
-            const token = await clerk.session.getToken();
-            if (token) {
-              headers.set("Authorization", `Bearer ${token}`);
-              resolve(headers);
-            }
-          } else {
-            setTimeout(checkToken, 500);
-          }
+      const clerk = window.Clerk;
+      if (clerk) {
+        const token = await clerk.session.getToken();
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
         }
-        checkToken();
-      });
+      }
+      // return new Promise(async (resolve) => {
+      //   async function checkToken() {
+      //     const clerk = window.Clerk;
+      //     if (clerk) {
+      //       const token = await clerk.session.getToken();
+      //       if (token) {
+      //         headers.set("Authorization", `Bearer ${token}`);
+      //         resolve(headers);
+      //       }
+      //     } else {
+      //       setTimeout(checkToken, 500);
+      //     }
+      //   }
+      //   checkToken();
+      // });
     },
   }),
   tagTypes: ["Hotel", "Location"],
@@ -62,6 +69,15 @@ export const api = createApi({
       query: (id) => `/hotels/${id}`,
       providesTags: (result, error, _id) => [{ type: "Hotel", _id }],
     }),
+
+    addReview: build.mutation({
+      query: (review) => ({
+        url: "reviews",
+        method: "POST",
+        body: review,
+      }),
+      invalidatesTags: [{ type: "Review", id: "LIST" }],
+    }),
   }),
 });
 
@@ -70,4 +86,5 @@ export const {
   useGetAllLocationsQuery,
   useGetHotelByIdQuery,
   useAddLocationMutation,
+  useAddReviewMutation,
 } = api;

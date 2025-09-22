@@ -1,4 +1,4 @@
- import { StrictMode } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import HomePage from "./page/home-page";
@@ -9,37 +9,45 @@ import RootLayoutPage from "./components/layout/root-layout.page.jsx";
 import NotFoundPage from "@/page/not-found.page.jsx";
 import Hotel from "@/page/hotel.page.jsx";
 import HotelDetailPage from "@/page/hotel-detail.page.jsx";
-import { store } from './lib/store.js'
-import { Provider } from 'react-redux'
- import { ClerkProvider } from '@clerk/clerk-react'
-import ProtectLayout from './components/layout/protect-layout.jsx'
+import { store } from "./lib/store.js";
+import { Provider } from "react-redux";
+import { ClerkProvider } from "@clerk/clerk-react";
+import ProtectLayout from "./components/layout/protect-layout.jsx";
+import AdminProtectLayout from "./components/layout/AdminProtectLayout";
+import CreateHotelPage from "./page/admin/create-hotel.page.jsx";
 
- const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
- if (!PUBLISHABLE_KEY) {
-     throw new Error('Add your Clerk Publishable Key to the .env file')
- }
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Add your Clerk Publishable Key to the .env file");
+}
 
-
- createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-    <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RootLayoutPage />}>
-          <Route index element={<HomePage />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/hotels" element={<Hotel />} />
-          <Route element={<ProtectLayout/>} >
-          <Route path="/hotels/:_id" element={<HotelDetailPage />} />
-          </Route>
-        </Route>
-          <Route path="*" element={<NotFoundPage/>}/>
-      </Routes>
-    </BrowserRouter>
-    </Provider>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<RootLayoutPage />}>
+              <Route index element={<HomePage />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/hotels" element={<Hotel />} />
+              <Route element={<ProtectLayout />}>
+                <Route path="/hotels/:_id" element={<HotelDetailPage />} />
+
+                <Route element={<AdminProtectLayout />}>
+                  <Route
+                    path="/admin/create-hotel"
+                    element={<CreateHotelPage />}
+                  />
+                </Route>
+              </Route>
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </ClerkProvider>
   </StrictMode>
 );
